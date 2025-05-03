@@ -1,0 +1,73 @@
+syntax = "proto3";
+
+package sendlix.api.v1;
+
+import "google/protobuf/timestamp.proto";
+import "EmailData.proto";
+
+service Email {
+  rpc SendEmail (MailData) returns (SendEmailResponse) {}
+  rpc SendEmlEmail (EmlMail) returns (SendEmailResponse) {}
+  rpc SendGroupEmail (GroupMailData) returns (SendEmailResponse) {}
+}
+
+message EmlMail {
+  bytes mail = 1;
+  AdditionalInfos additionalInfos = 2;
+}
+
+message GroupMailData {
+   MailContent content = 1;
+   string groupId = 2;
+   string subject = 3;
+   EmailData from = 4;
+   string category = 5;
+}
+
+message SendEmailResponse {
+  repeated string message = 1;
+  int64 emailsLeft = 2;
+}
+
+
+enum MailContentType {
+    TEXT = 0;
+    HTML = 1;
+}
+
+message MailContent {
+    MailContentType type = 1; 
+    string value = 2;  
+    bool tracking = 3;
+}
+
+message AttachmentData {
+    string contentUrl = 1;      
+    string type = 2;            // MIME type
+    string filename = 3;
+  }
+message MailData {
+  // Email recipient fields
+  repeated EmailData to = 1;
+  repeated EmailData cc = 2;
+  repeated EmailData bcc = 3;
+
+  // Sender information
+  EmailData from = 4;
+  optional EmailData reply_to = 5;
+
+  // Email content fields
+  string subject = 6;
+
+  MailContent content = 7;
+
+  AdditionalInfos additionalInfos = 8;
+  map<string, string> substitutions = 9;
+}
+
+
+message AdditionalInfos {
+  repeated AttachmentData attachments = 1;
+  optional string category = 2;  
+  optional google.protobuf.Timestamp send_at = 4;
+}

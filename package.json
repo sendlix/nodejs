@@ -1,0 +1,51 @@
+{
+  "scripts": {
+    "test": "jest",
+    "compile": "mkdir src/proto && grpc_tools_node_protoc --ts_out=import_style=commonjs,binary:./src/proto --grpc_out=grpc_js:./src/proto --proto_path=./proto ./proto/*.proto",
+    "build": "npm run compile && npm run build:esm && npm run build:cjs",
+    "build:esm": "tsc",
+    "build:cjs": "tsc --module CommonJS --outDir dist/cjs"
+  },
+  "dependencies": {
+    "@grpc/grpc-js": "^1.13.3",
+    "google-protobuf": "^3.21.4"
+  },
+  "license": "Apache-2.0",
+  "name": "sendlix",
+  "version": "1.0.0",
+  "description": "Send emails using Sendlix API",
+  "author": "Sendlix",
+  "main": "dist/cjs/index.js",
+  "module": "dist/esm/index.js",
+  "files": [
+    "dist"
+  ],
+  "devDependencies": {
+    "@types/google-protobuf": "^3.15.12",
+    "@types/jest": "^29.5.14",
+    "grpc-tools": "^1.13.0",
+    "jest": "^29.7.0",
+    "protoc-gen-ts": "^0.8.7",
+    "ts-jest": "^29.3.2",
+    "ts-node": "^10.9.2",
+    "ts-proto": "^2.7.0",
+    "typescript": "^5.8.3"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/sendlix/nodejs"
+  },
+  "homepage": "nodejs.docs.sendlix.com",
+  "engines": {
+    "node": ">=16.0.0"
+  },
+  "keywords": [
+    "sendlix",
+    "email",
+    "api",
+    "sdk"
+  ],
+  "bugs": {
+    "url": "https://github.com/sendlix/nodejs/issues"
+  }
+}
