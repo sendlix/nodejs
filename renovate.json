@@ -1,12 +1,20 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "extends": ["config:recommended"],
+  "extends": [
+    "config:recommended"
+  ],
   "packageRules": [
     {
-      "matchPackagePatterns": ["*"],
-      "matchManagers": ["npm"],
-      "enabled": true
+      "matchManagers": [
+        "npm"
+      ],
+      "enabled": true,
+      "matchPackageNames": [
+        "*"
+      ]
     }
   ],
-  "labels": ["dependencies"]
+  "labels": [
+    "dependencies"
+  ]
 }
