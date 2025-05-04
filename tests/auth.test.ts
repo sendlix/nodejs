@@ -1,10 +1,10 @@
-import { Auth } from "../src/auth";
+import { Auth } from "../src/auth/auth";
 import { sendlix } from "../src/proto/auth";
 import { google } from "../src/proto/google/protobuf/timestamp";
 
 const Timestamp = google.protobuf.Timestamp;
 
-const { AuthRequest, AuthResponse } = sendlix.api.v1;
+const { AuthResponse } = sendlix.api.v1;
 
 // Mock gRPC client
 jest.mock("@grpc/grpc-js", () => ({

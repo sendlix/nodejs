@@ -1,5 +1,5 @@
 import { GroupClient } from "../../src/Clients/GroupClient";
-import { IAuth } from "../../src/IAuth";
+import { IAuth } from "../../src/auth/IAuth";
 import { sendlix } from "../../src/proto/group";
 
 const { InsertEmailToGroupRequest, RemoveEmailFromGroupRequest } =

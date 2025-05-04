@@ -1,7 +1,7 @@
 import * as grpc from "@grpc/grpc-js";
-import { Auth } from "../../src/auth";
+import { Auth } from "../../src/auth/auth";
 import { Client } from "../../src/Clients/Client";
-import { IAuth } from "../../src/IAuth";
+import { IAuth } from "../../src/auth/IAuth";
 
 // filepath: z:\Programs\Webseite\Sendlix\api\sdks\nodejs\tests\Client.test.ts
 
@@ -29,7 +29,7 @@ jest.mock("@grpc/grpc-js", () => {
 });
 
 // Mock Auth
-jest.mock("../../src/auth", () => {
+jest.mock("../../src/auth/auth", () => {
   return {
     Auth: jest.fn().mockImplementation(() => ({
       getAuthHeader: jest

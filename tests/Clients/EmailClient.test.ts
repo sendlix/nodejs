@@ -1,5 +1,5 @@
 import { EmailClient } from "../../src/Clients/EmailClient";
-import { IAuth } from "../../src/IAuth";
+import { IAuth } from "../../src/auth/IAuth";
 import { readFile } from "fs/promises";
 import { sendlix } from "../../src/proto/email";
 
