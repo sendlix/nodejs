@@ -1,5 +1,4 @@
-import { IAuth } from "../IAuth";
-
+import { IAuth } from "../auth/IAuth";
 import { sendlix } from "../proto/email";
 import { EmailData } from "../proto/EmailData";
 import { readFile } from "fs/promises";

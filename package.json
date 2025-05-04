@@ -12,7 +12,7 @@
   },
   "license": "Apache-2.0",
   "name": "sendlix",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "description": "Send emails using Sendlix API",
   "author": "Sendlix",
   "main": "dist/cjs/index.js",
@@ -27,13 +27,11 @@
     "jest": "^29.7.0",
     "protoc-gen-ts": "^0.8.7",
     "ts-jest": "^29.3.2",
-    "ts-node": "^10.9.2",
-    "ts-proto": "^2.7.0",
     "typescript": "^5.8.3"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/sendlix/nodejs"
+    "url": "git+https://github.com/sendlix/nodejs.git"
   },
   "homepage": "nodejs.docs.sendlix.com",
   "engines": {

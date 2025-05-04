@@ -1,6 +1,6 @@
 import * as grpc from "@grpc/grpc-js";
-import { Auth } from "../auth";
-import { IAuth } from "../IAuth";
+import { Auth } from "../auth/auth";
+import { IAuth } from "../auth/IAuth";
 
 export abstract class Client<T extends typeof grpc.Client> {
   protected client: InstanceType<T>;

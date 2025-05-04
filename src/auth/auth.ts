@@ -1,5 +1,5 @@
 import { credentials } from "@grpc/grpc-js";
-import { sendlix } from "./proto/auth";
+import { sendlix } from "../proto/auth";
 import { IAuth } from "./IAuth";
 
 const { AuthRequest, ApiKey, AuthClient: gRPCAuthClient } = sendlix.api.v1;
