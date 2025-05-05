@@ -55,44 +55,23 @@ const address2 = {
 };
 ```
 
-### EmailContent
+### mailOption
 
-The `EmailContent` object defines the content of an email:
+The `mailOption` object configures an email to be sent:
 
-| Property | Type             | Description                       |
-| -------- | ---------------- | --------------------------------- |
-| value    | string           | The content of the email          |
-| type     | 'html' \| 'text' | Content type (HTML or plain text) |
-| tracking | boolean          | Optional tracking flag            |
+| Property | Type                            | Description                               |
+| -------- | ------------------------------- | ----------------------------------------- |
+| from     | [EmailAddress](#emailaddress)   | Sender email address and optional name    |
+| to       | [EmailAddress](#emailaddress)[] | List of recipient email addresses         |
+| cc       | [EmailAddress](#emailaddress)[] | Optional list of CC recipients            |
+| bcc      | [EmailAddress](#emailaddress)[] | Optional list of BCC recipients           |
+| subject  | string                          | Subject line of the email                 |
+| replyTo  | [EmailAddress](#emailaddress)   | Optional reply-to address                 |
+| html     | string                          | Optional HTML content of the email        |
+| text     | string                          | Optional plain text content of the email  |
+| tracking | boolean                         | Optional flag for tracking links in email |
 
-For more information on email tracking, see the documentation: [https://docs.sendlix.com/tracking](https://docs.sendlix.com/tracking)
-
-**note**: Only in html mode, the tracking option is available.
-
-Example:
-
-```javascript
-const content = {
-  value: "<h1>Hello World!</h1><p>This is a test email.</p>",
-  type: "html",
-  tracking: true,
-};
-```
-
-### MailOption
-
-The `MailOption` object configures an email to be sent:
-
-| Property      | Type                                        | Description                                                                                                                                                    |
-| ------------- | ------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| from          | [EmailAddress](#emailaddress)               | Sender email address and optional name                                                                                                                         |
-| to            | [EmailAddress](#emailaddress)[]             | List of recipient email addresses                                                                                                                              |
-| cc            | [EmailAddress](#emailaddress)[]             | Optional list of CC recipients                                                                                                                                 |
-| bcc           | [EmailAddress](#emailaddress)[]             | Optional list of BCC recipients                                                                                                                                |
-| subject       | string                                      | Subject line of the email                                                                                                                                      |
-| content       | [EmailContent](#emailcontent)               | Email content (HTML or text)                                                                                                                                   |
-| replyTo       | [EmailAddress](#emailaddress)               | Optional reply-to address                                                                                                                                      |
-| substitutions | <nobr>Record&#60;string, string&#62;</nobr> | Substitutions for personalization. The keys should be the placeholders in the email template, and the values should be the actual values to replace them with. |
+> **Note:** At least one of `html` or `text` must be provided. If both are provided, the email will be sent as a multipart message.
 
 Example:
 
@@ -101,10 +80,9 @@ const emailConfig = {
   from: { email: "sender@example.com", name: "Sender Name" },
   to: [{ email: "recipient@example.com", name: "Recipient Name" }],
   subject: "Test Email",
-  content: {
-    value: "<h1>Hello World!</h1><p>This is a test email.</p>",
-    type: "html",
-  },
+  html: "<h1>Hello World!</h1><p>This is a test email.</p>",
+  text: "Hello World! This is a test email.",
+  tracking: true,
 };
 ```
 
@@ -125,7 +103,6 @@ const attachment = {
   contentURL: "https://example.com/document.pdf",
   filename: "document.pdf",
   contentType: "application/pdf",
-  contentDisposition: "attachment",
 };
 ```
 
@@ -155,6 +132,35 @@ const additionalOptions = {
 };
 ```
 
+### GroupMailData
+
+The `GroupMailData` object configures an email to be sent to a group:
+
+| Property | Type                          | Description                               |
+| -------- | ----------------------------- | ----------------------------------------- |
+| from     | [EmailAddress](#emailaddress) | Sender email address and optional name    |
+| groupId  | string                        | ID of the group to send the email to      |
+| subject  | string                        | Subject line of the email                 |
+| category | string                        | Optional category for the email           |
+| html     | string                        | Optional HTML content of the email        |
+| text     | string                        | Optional plain text content of the email  |
+| tracking | boolean                       | Optional flag for tracking links in email |
+
+> **Note:** At least one of `html` or `text` must be provided. If both are provided, the email will be sent as a multipart message.
+
+Example:
+
+```javascript
+const groupMailData = {
+  from: { email: "sender@example.com", name: "Sender Name" },
+  groupId: "group-123",
+  subject: "Group Announcement",
+  html: "<h1>Hello Group!</h1><p>This is a group email.</p>",
+  text: "Hello Group! This is a group email.",
+  tracking: true,
+};
+```
+
 ## Methods
 
 ### constructor(auth)
@@ -173,7 +179,7 @@ Creates a new EmailClient instance.
 const client = new EmailClient("your-api-key");
 ```
 
-### sendEmail([MailOption](#mailoption), [additionalOptions](#additionalemailoptions))
+### sendEmail(mailOption, additionalOptions)
 
 Sends an email with the specified configuration.
 
@@ -181,12 +187,12 @@ Sends an email with the specified configuration.
 
 | Name              | Type                                              | Description                  |
 | ----------------- | ------------------------------------------------- | ---------------------------- |
-| MailOption        | [MailOption](#mailoption)                         | Email configuration          |
+| mailOption        | [mailOption](#mailoption)                         | Email configuration          |
 | additionalOptions | [AdditionalEmailOptions](#additionalemailoptions) | Optional additional settings |
 
 **Returns:**
 
-- Promise&#60;[Response](#sendemailresponse)&#62;: Promise that resolves with the email sending response
+- Promise&#60;[Response](#response)&#62;: Promise that resolves with the email sending response
 
 **Example:**
 
@@ -196,16 +202,14 @@ const response = await client.sendEmail({
   from: { email: "sender@example.com", name: "Sender Name" },
   to: [{ email: "recipient@example.com", name: "Recipient Name" }],
   subject: "Test Email",
-  content: {
-    value: "<h1>Hello World!</h1><p>This is a test email.</p>",
-    type: "html",
-  },
+  html: "<h1>Hello World!</h1><p>This is a test email.</p>",
+  text: "Hello World! This is a test email.",
 });
 ```
 
-### sendEmlEmail(eml, [additionalOptions](#additionalemailoptions))
+### sendEmlEmail(eml, additionalOptions)
 
-Sends a pre-formatted email in EML format. More information on processing EML files can be found in the documentation linked [here](https://docs.sendlix.com/emlemail).
+Sends a pre-formatted email in EML format.
 
 **Parameters:**
 
@@ -216,7 +220,7 @@ Sends a pre-formatted email in EML format. More information on processing EML fi
 
 **Returns:**
 
-- Promise&#60;[Response](#sendemailresponse)&#62;: Promise that resolves with the email sending response
+- Promise&#60;[Response](#response)&#62;: Promise that resolves with the email sending response
 
 **Example:**
 
@@ -232,18 +236,15 @@ const response = await client.sendEmlEmail(emlBuffer);
 
 For more information on processing Eml emails, see the documentation: [https://docs.sendlix.com/emlemail](https://docs.sendlix.com/emlemail)
 
-### sendGroupEmail([content](#emailcontent), [from](#emailaddress), groupId, subject)
+### sendGroupEmail(groupData)
 
 Sends an email to a group of recipients identified by a group ID.
 
 **Parameters:**
 
-| Name    | Type                          | Description                          |
-| ------- | ----------------------------- | ------------------------------------ |
-| content | [EmailContent](#emailcontent) | Email content (HTML or text)         |
-| from    | [EmailAddress](#emailaddress) | Sender email address and name        |
-| groupId | string                        | ID of the group to send the email to |
-| subject | string                        | Subject line of the email            |
+| Name      | Type                            | Description               |
+| --------- | ------------------------------- | ------------------------- |
+| groupData | [GroupMailData](#groupmaildata) | Group email configuration |
 
 **Returns:**
 
@@ -253,13 +254,10 @@ Sends an email to a group of recipients identified by a group ID.
 
 ```javascript
 const client = new EmailClient("your-api-key");
-const response = await client.sendGroupEmail(
-  {
-    value: "<h1>Hello Group!</h1><p>This is a group email.</p>",
-    type: "html",
-  },
-  { email: "sender@example.com", name: "Sender Name" },
-  "{groupId}",
-  "Group Announcement"
-);
+const emailsLeft = await client.sendGroupEmail({
+  from: { email: "sender@example.com", name: "Sender Name" },
+  groupId: "group-123",
+  subject: "Group Announcement",
+  html: "<h1>Hello Group!</h1><p>This is a group email.</p>",
+});
 ```

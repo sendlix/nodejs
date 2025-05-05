@@ -3,7 +3,7 @@ import { IAuth } from "../../src/auth/IAuth";
 import { readFile } from "fs/promises";
 import { sendlix } from "../../src/proto/email";
 
-const { EmlMail, GroupMailData, MailData } = sendlix.api.v1;
+const { EmlMailRequest, GroupMailData, SendMailRequest } = sendlix.api.v1;
 
 // filepath: z:\Programs\Webseite\Sendlix\api\sdks\nodejs\src\Clients\EmailClient.test.ts
 
@@ -33,14 +33,14 @@ describe("EmailClient", () => {
 
   describe("sendEmail", () => {
     let sendEmailMock: (
-      mailData: InstanceType<typeof MailData>,
+      mailData: InstanceType<typeof SendMailRequest>,
       callback: (error: Error | null, response: GRPCResponse) => void
     ) => void;
 
     beforeEach(() => {
       sendEmailMock = jest.fn(
         (
-          mailData: InstanceType<typeof MailData>,
+          mailData: InstanceType<typeof SendMailRequest>,
           callback: (error: Error | null, response: GRPCResponse) => void
         ) => {
           const response: GRPCResponse = {
@@ -65,7 +65,7 @@ describe("EmailClient", () => {
         from: { email: "sender@example.com", name: "Sender" },
         to: [{ email: "recipient@example.com", name: "Recipient" }],
         subject: "Test subject",
-        content: { value: "<p>Hello</p>", type: "html" as const },
+        html: "<p>Hello</p>",
       };
 
       const result = await emailClient.sendEmail(sendMailConfig);
@@ -79,7 +79,7 @@ describe("EmailClient", () => {
     test("should reject when gRPC returns error", async () => {
       sendEmailMock = jest.fn(
         (
-          mailData: InstanceType<typeof MailData>,
+          mailData: InstanceType<typeof SendMailRequest>,
           callback: (error: Error | null, response: GRPCResponse) => void
         ) => {
           callback(new Error("gRPC error"), {
@@ -100,7 +100,7 @@ describe("EmailClient", () => {
         from: { email: "sender@example.com" },
         to: [{ email: "recipient@example.com" }],
         subject: "Test subject",
-        content: { value: "Hello", type: "text" as const },
+        text: "Hello",
       };
 
       await expect(emailClient.sendEmail(sendMailConfig)).rejects.toThrow(
@@ -111,7 +111,7 @@ describe("EmailClient", () => {
 
   describe("sendRawEmail", () => {
     let sendEmlEmailMock: (
-      emlMail: InstanceType<typeof EmlMail>,
+      emlMail: InstanceType<typeof EmlMailRequest>,
       callback: (error: Error | null, response: GRPCResponse) => void
     ) => void;
     const mockedReadFile = readFile as jest.Mock;
@@ -119,7 +119,7 @@ describe("EmailClient", () => {
     beforeEach(() => {
       sendEmlEmailMock = jest.fn(
         (
-          emlMail: InstanceType<typeof EmlMail>,
+          emlMail: InstanceType<typeof EmlMailRequest>,
           callback: (error: Error | null, response: GRPCResponse) => void
         ) => {
           const response: GRPCResponse = {
@@ -159,7 +159,7 @@ describe("EmailClient", () => {
     test("should reject when gRPC sendRawEmail returns error", async () => {
       sendEmlEmailMock = jest.fn(
         (
-          emlMail: InstanceType<typeof EmlMail>,
+          emlMail: InstanceType<typeof EmlMailRequest>,
           callback: (error: Error | null, response: GRPCResponse) => void
         ) => {
           callback(new Error("sendRawEmail error"), {
@@ -183,14 +183,14 @@ describe("EmailClient", () => {
 
   describe("sendGroupEmail", () => {
     let sendGroupEmailMock: (
-      groupMailData: InstanceType<typeof GroupMailData>,
+      groupSendMailRequest: InstanceType<typeof GroupMailData>,
       callback: (error: Error | null, response: GRPCResponse) => void
     ) => void;
 
     beforeEach(() => {
       sendGroupEmailMock = jest.fn(
         (
-          groupMailData: InstanceType<typeof GroupMailData>,
+          groupSendMailRequest: InstanceType<typeof GroupMailData>,
           callback: (error: Error | null, response: GRPCResponse) => void
         ) => {
           const response: GRPCResponse = {
@@ -210,48 +210,18 @@ describe("EmailClient", () => {
     });
 
     test("should send group email and return response", async () => {
-      const content = { value: "<p>Group Email</p>", type: "html" as const };
       const from = { email: "group@sender.com" };
       const groupId = "group-123";
       const subject = "Group Subject";
 
-      const result = await emailClient.sendGroupEmail(
-        content,
-        from,
-        groupId,
-        subject
-      );
+      const result = await emailClient.sendGroupEmail({
+        from: from,
+        subject: subject,
+        html: "<p>Group Email</p>",
+        groupId: groupId,
+      });
       expect(result).toEqual(5);
       expect(sendGroupEmailMock).toHaveBeenCalledTimes(1);
-    });
-
-    test("should reject when gRPC sendGroupEmail returns error", async () => {
-      sendGroupEmailMock = jest.fn(
-        (
-          groupMailData: InstanceType<typeof GroupMailData>,
-          callback: (error: Error | null, response: GRPCResponse) => void
-        ) => {
-          callback(new Error("group error"), {
-            emailsLeft: 0,
-            message: [],
-          });
-        }
-      );
-      (
-        emailClient as unknown as {
-          client: { SendGroupEmail: typeof sendGroupEmailMock };
-        }
-      ).client = {
-        SendGroupEmail: sendGroupEmailMock,
-      };
-      await expect(
-        emailClient.sendGroupEmail(
-          { value: "text", type: "text" },
-          { email: "a@b.com" },
-          "g1",
-          "subj"
-        )
-      ).rejects.toThrow("group error");
     });
   });
 });

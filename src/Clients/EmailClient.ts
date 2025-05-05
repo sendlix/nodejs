@@ -6,12 +6,11 @@ import { google } from "../proto/google/protobuf/timestamp";
 import { Client } from "./Client";
 
 const {
-  MailData,
+  SendMailRequest,
   MailContent,
-  MailContentType,
   AdditionalInfos,
   AttachmentData,
-  EmlMail,
+  EmlMailRequest,
   EmailClient: gRPCEmailClient,
   GroupMailData,
 } = sendlix.api.v1;
@@ -35,9 +34,10 @@ type Response = {
  * @property {EmailAddress[]} [cc] - Optional list of CC recipients
  * @property {EmailAddress[]} [bcc] - Optional list of BCC recipients
  * @property {string} subject - Email subject line
- * @property {EmailContent} content - Email content (HTML or text)
  * @property {EmailAddress} [replyTo] - Optional reply-to address
- * @property {Record<string, string>} [substitutions] - Optional key-value pairs for template substitutions
+ * @property {string} [html] - Optional HTML content of the email
+ * @property {string} [text] - Optional plain text content of the email
+ * @property {boolean} [tracking] - Optional flag for tracking links in the email
  *
  */
 type mailOption = {
@@ -46,21 +46,30 @@ type mailOption = {
   cc?: EmailAddress[];
   bcc?: EmailAddress[];
   subject: string;
-  content: EmailContent;
   replyTo?: EmailAddress;
-  substitutions?: Record<string, string>;
+  html?: string;
+  text?: string;
+  tracking?: boolean;
 };
 
 /**
- * Email content configuration
+ * Email content type
  * @typedef {Object} EmailContent
- * @property {string} value - The content of the email
- * @property {'html'|'text'} type - Content type (HTML or plain text)
+ * @property {string} from - Sender email address
+ * @property {string} subject - Subject of the email
+ * @property {string} category - Optional category for the email
+ * @property {string} [html] - Optional HTML content of the email
+ * @property {string} [text] - Optional plain text content of the email
  * @property {boolean} [tracking] - Optional flag for tracking links in the email
- */
-type EmailContent = {
-  value: string;
-  type: "html" | "text";
+ **/
+
+type GroupMailData = {
+  from: EmailAddress;
+  groupId: string;
+  subject: string;
+  category?: string;
+  html?: string;
+  text?: string;
   tracking?: boolean;
 };
 
@@ -144,24 +153,22 @@ export class EmailClient extends Client<typeof gRPCEmailClient> {
       !mailOption.from ||
       !mailOption.subject ||
       !mailOption.to ||
-      !mailOption.content
+      !(mailOption.text || mailOption.html)
     ) {
       throw new Error(
         "Missing required fields: from, to, subject, and content are required."
       );
     }
-    if (
-      mailOption.content.type !== "html" &&
-      mailOption.content.tracking === true
-    ) {
-      throw new Error("Tracking is only available for HTML content.");
-    }
 
-    const mailData = new MailData({
+    const mailData = new SendMailRequest({
       from: createEmailAddress(mailOption.from),
       to: mailOption.to.map(createEmailAddress),
       subject: mailOption.subject,
-      content: createMailContent(mailOption.content),
+      TextContent: new MailContent({
+        html: mailOption.html,
+        text: mailOption.text,
+        tracking: mailOption.tracking || false,
+      }),
     });
     if (mailOption.cc) {
       mailData.cc = mailOption.cc.map(createEmailAddress);
@@ -171,15 +178,6 @@ export class EmailClient extends Client<typeof gRPCEmailClient> {
     }
     if (mailOption.replyTo) {
       mailData.reply_to = createEmailAddress(mailOption.replyTo);
-    }
-
-    if (mailOption.substitutions) {
-      const sub = mailData.substitutions;
-      for (const key in mailOption.substitutions) {
-        if (mailOption.substitutions.hasOwnProperty(key)) {
-          sub.set(key, mailOption.substitutions[key]);
-        }
-      }
     }
 
     if (additionalOptions) {
@@ -206,7 +204,7 @@ export class EmailClient extends Client<typeof gRPCEmailClient> {
    *
    * For more information on how to we handle raw emails, please refer to the documentation:
    *
-   * https://docs.sendlix.com/docs/eml
+   * https://docs.sendlix.com/emlemail
    *
    * @param {string|Buffer|Uint8Array} eml - Raw email in EML format, can be a filepath string
    * @param {AdditionalEmailOptions} [additionalOptions] - Optional additional settings
@@ -224,7 +222,7 @@ export class EmailClient extends Client<typeof gRPCEmailClient> {
       eml = new Uint8Array(eml.buffer, eml.byteOffset, eml.byteLength);
     }
 
-    const rawMail = new EmlMail();
+    const rawMail = new EmlMailRequest();
     rawMail.mail = eml as Uint8Array;
 
     if (additionalOptions) {
@@ -248,27 +246,23 @@ export class EmailClient extends Client<typeof gRPCEmailClient> {
 
   /**
    * Sends an email to a group of recipients identified by a group ID
-   * @param {EmailContent} content - Email content (HTML or text)
-   * @param {EmailAddress} from - Sender email address
-   * @param {string} groupId - ID of the recipient group
-   * @param {string} subject - Email subject line
-   * @param {string} [category] - Optional category for the emails
+   * @param {GroupMailData} groupData - Group email configuration
    * @returns {Promise<number>} Promise resolving to the number of emails left in the account
    */
-  public async sendGroupEmail(
-    content: EmailContent,
-    from: EmailAddress,
-    groupId: string,
-    subject: string,
-    category?: string
-  ): Promise<number> {
+  public async sendGroupEmail(groupData: GroupMailData): Promise<number> {
     const mailData = new GroupMailData();
-    mailData.from = createEmailAddress(from);
-    mailData.groupId = groupId;
-    mailData.subject = subject;
-    mailData.content = createMailContent(content);
-    if (category) {
-      mailData.category = category;
+    mailData.from = createEmailAddress(groupData.from);
+    mailData.groupId = groupData.groupId;
+    mailData.subject = groupData.subject;
+
+    mailData.content = new MailContent({
+      html: groupData.html,
+      text: groupData.text,
+      tracking: groupData.tracking || false,
+    });
+
+    if (groupData.category) {
+      mailData.category = groupData.category;
     }
 
     return new Promise<number>((resolve, reject) => {
@@ -346,30 +340,4 @@ function createAdditionalEmailOptions(
     additionalInfos.send_at = timestamp;
   }
   return additionalInfos;
-}
-
-/**
- * Creates a MailContent object from EmailContent
- * @param {EmailContent} content - The content to convert
- * @returns {MailContent} The converted gRPC MailContent object
- * @private
- */
-function createMailContent(
-  content: EmailContent
-): InstanceType<typeof MailContent> {
-  const mailContent = new MailContent();
-  mailContent.value = content.value;
-  mailContent.tracking = content.tracking || false;
-
-  switch (content.type) {
-    case "html":
-      mailContent.type = MailContentType.HTML;
-      break;
-    case "text":
-      mailContent.type = MailContentType.TEXT;
-      break;
-    default:
-      throw new Error("Invalid content type");
-  }
-  return mailContent;
 }

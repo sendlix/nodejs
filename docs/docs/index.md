@@ -90,10 +90,7 @@ const sendMail = {
   from: { email: "sender@example.com", name: "Sender Name" },
   to: [{ email: "recipient@example.com", name: "Recipient Name" }],
   subject: "Hello World!",
-  content: {
-    value: "<h1>Welcome!</h1><p>This is a test email.</p>",
-    type: "html",
-  },
+  html: "<h1>Welcome!</h1><p>This is a test email.</p>",
 };
 
 // Send email
