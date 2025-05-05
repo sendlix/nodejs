@@ -12,7 +12,7 @@
   },
   "license": "Apache-2.0",
   "name": "sendlix",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Send emails using Sendlix API",
   "author": "Sendlix",
   "main": "dist/cjs/index.js",
