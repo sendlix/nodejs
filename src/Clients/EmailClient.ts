@@ -255,7 +255,7 @@ export class EmailClient extends Client<typeof gRPCEmailClient> {
     mailData.groupId = groupData.groupId;
     mailData.subject = groupData.subject;
 
-    mailData.content = new MailContent({
+    mailData.TextContent = new MailContent({
       html: groupData.html,
       text: groupData.text,
       tracking: groupData.tracking || false,

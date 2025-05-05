@@ -3,8 +3,6 @@ import { Auth } from "../../src/auth/auth";
 import { Client } from "../../src/Clients/Client";
 import { IAuth } from "../../src/auth/IAuth";
 
-// filepath: z:\Programs\Webseite\Sendlix\api\sdks\nodejs\tests\Client.test.ts
-
 // Mock gRPC
 jest.mock("@grpc/grpc-js", () => {
   const mockMetadata = {

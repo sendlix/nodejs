@@ -5,8 +5,6 @@ import { sendlix } from "../../src/proto/email";
 
 const { EmlMailRequest, GroupMailData, SendMailRequest } = sendlix.api.v1;
 
-// filepath: z:\Programs\Webseite\Sendlix\api\sdks\nodejs\src\Clients\EmailClient.test.ts
-
 jest.mock("fs/promises", () => {
   return {
     readFile: jest.fn(),
