@@ -26,9 +26,6 @@ const client = new EmailClient("your-api-key");
 
 This method allows you to add a email address to a group, along with any substitutions that may be needed for personalization.
 
-:::warning
-You can add an email address multiple times to the same group. When sending a group email, the user will receive multiple copies of the same email.
-:::
 **Parameters:**
 
 | Name          | Type                                        | Description                                                                                                                                                    |
