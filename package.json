@@ -32,10 +32,10 @@
     "conventional-changelog-cli": "^5.0.0",
     "grpc-tools": "^1.13.0",
     "husky": "^9.1.7",
-    "jest": "^30.0.4",
+    "jest": "^30.0.5",
     "protoc-gen-ts": "^0.8.7",
     "semantic-release": "^24.2.7",
-    "ts-jest": "^29.4.0",
+    "ts-jest": "^29.4.1",
     "typescript": "^5.8.3",
     "ts-node": "^10.9.2"
   },
