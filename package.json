@@ -5,7 +5,7 @@
     "build": "npm run compile && npm run build:esm && npm run build:cjs",
     "build:esm": "tsc",
     "build:cjs": "tsc --module CommonJS --outDir dist/cjs",
-    "prepare": "husky install",
+    "prepare": "husky",
     "release": "semantic-release"
   },
   "dependencies": {
@@ -25,6 +25,11 @@
   "devDependencies": {
     "@commitlint/cli": "^19.8.1",
     "@commitlint/config-conventional": "^19.8.1",
+    "@semantic-release/commit-analyzer": "^13.0.0",
+    "@semantic-release/git": "^10.0.1",
+    "@semantic-release/github": "^10.3.5",
+    "@semantic-release/npm": "^12.0.1",
+    "@semantic-release/release-notes-generator": "^14.0.0",
     "@types/google-protobuf": "^3.15.12",
     "@types/jest": "^30.0.0",
     "conventional-changelog-cli": "^5.0.0",
@@ -33,14 +38,9 @@
     "jest": "^30.0.5",
     "protoc-gen-ts": "^0.8.7",
     "semantic-release": "^24.2.7",
-    "@semantic-release/git": "^10.0.1",
-    "@semantic-release/github": "^10.3.5",
-    "@semantic-release/npm": "^12.0.1",
-    "@semantic-release/commit-analyzer": "^13.0.0",
-    "@semantic-release/release-notes-generator": "^14.0.0",
     "ts-jest": "^29.4.1",
-    "typescript": "^5.9.2",
-    "ts-node": "^10.9.2"
+    "ts-node": "^10.9.2",
+    "typescript": "^5.9.2"
   },
   "repository": {
     "type": "git",
