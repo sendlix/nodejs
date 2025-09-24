@@ -13,7 +13,24 @@ const {
   EmlMailRequest,
   EmailClient: gRPCEmailClient,
   GroupMailData,
+  Images,
+  MimeType,
 } = sendlix.api.v1;
+
+/**
+ * Image attachment configuration
+ *
+ * !Sendlix Plus feature
+ * @typedef {Object} Images
+ * @property {string} placeholder - Placeholder string in the email content to be replaced by the image
+ * @property {ArrayBuffer} data - Binary data of the image
+ * @property {"PNG" | "JPG" | "GIF"} type - Type of the image
+ */
+type Images = {
+  placeholder: string;
+  data: ArrayBuffer | Uint8Array;
+  type: keyof typeof MimeType;
+};
 
 /**
  * Response type for the email sending operation
@@ -38,6 +55,7 @@ type Response = {
  * @property {string} [html] - Optional HTML content of the email
  * @property {string} [text] - Optional plain text content of the email
  * @property {boolean} [tracking] - Optional flag for tracking links in the email
+ * @property {Images[]} [images] - Optional list of images to embed in the email
  *
  */
 type mailOption = {
@@ -50,6 +68,7 @@ type mailOption = {
   html?: string;
   text?: string;
   tracking?: boolean;
+  images?: Images[];
 };
 
 /**
@@ -71,6 +90,7 @@ type GroupMailData = {
   html?: string;
   text?: string;
   tracking?: boolean;
+  images?: Images[];
 };
 
 /**
@@ -168,6 +188,7 @@ export class EmailClient extends Client<typeof gRPCEmailClient> {
         html: mailOption.html,
         text: mailOption.text,
         tracking: mailOption.tracking || false,
+        Images: createImages(mailOption.images),
       }),
     });
     if (mailOption.cc) {
@@ -259,6 +280,7 @@ export class EmailClient extends Client<typeof gRPCEmailClient> {
       html: groupData.html,
       text: groupData.text,
       tracking: groupData.tracking || false,
+      Images: createImages(groupData.images),
     });
 
     if (groupData.category) {
@@ -275,6 +297,17 @@ export class EmailClient extends Client<typeof gRPCEmailClient> {
       });
     });
   }
+}
+
+function createImages(images?: Images[]): InstanceType<typeof Images>[] {
+  if (!images) return [];
+  return images.map((img) => {
+    const image = new Images();
+    image.placeholder = img.placeholder;
+    image.Image = new Uint8Array(img.data);
+    image.type = MimeType[img.type];
+    return image;
+  });
 }
 
 /**

@@ -34,9 +34,22 @@ message SendEmailResponse {
 
 
 message MailContent {
-  string html = 1;
-  string text = 2;
-  bool tracking = 3;
+   string html = 1;
+   string text = 2;
+   bool tracking = 3;
+   repeated Images Images = 4;
+}
+
+message Images {
+    string placeholder = 1;
+    bytes Image = 3;
+    MimeType type = 2;
+}
+
+enum MimeType  {
+    PNG = 0;
+    JPEG = 1;
+    GIF = 2;
 }
 
 message AttachmentData {

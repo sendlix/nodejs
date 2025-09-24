@@ -33,6 +33,26 @@ Example:
 }
 ```
 
+### Images
+
+The `Images` type represents the configuration for image attachments in an email.
+It contains the following properties:
+| Property | Type | Description |
+| ----------- | ------------------------ | ------------------------------------------------ |
+| placeholder | string | Placeholder string in the email content to be replaced by the image |
+| data | ArrayBuffer \| Uint8Array | Binary data of the image |
+| type | "PNG" \| "JPG" \| "GIF" | Type of the image |
+
+Example:
+
+```javascript
+const imageAttachment = {
+  placeholder: "{{image1}}",
+  data: fs.readFileSync("path/to/image.png"),
+  type: "PNG",
+};
+```
+
 ### EmailAddress
 
 The `EmailAddress` type can be either a string or an object with the following properties:
@@ -260,4 +280,8 @@ const emailsLeft = await client.sendGroupEmail({
   subject: "Group Announcement",
   html: "<h1>Hello Group!</h1><p>This is a group email.</p>",
 });
+```
+
+```
+
 ```
