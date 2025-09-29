@@ -6,11 +6,12 @@
     "build:esm": "tsc",
     "build:cjs": "tsc --module CommonJS --outDir dist/cjs",
     "prepare": "husky",
-    "release": "semantic-release"
+    "release": "semantic-release",
+    "docs": "jsdoc -c jsdoc.json"
   },
   "dependencies": {
-    "@grpc/grpc-js": "^1.13.4",
-    "google-protobuf": "^3.21.4"
+    "@grpc/grpc-js": "^1.14.0",
+    "google-protobuf": "^4.0.0"
   },
   "license": "Apache-2.0",
   "name": "sendlix",
@@ -23,24 +24,31 @@
     "dist"
   ],
   "devDependencies": {
-    "@commitlint/cli": "^19.8.1",
-    "@commitlint/config-conventional": "^19.8.1",
+    "@babel/core": "^7.28.4",
+    "@babel/preset-typescript": "^7.27.1",
+    "@commitlint/cli": "^20.0.0",
+    "@commitlint/config-conventional": "^20.0.0",
     "@semantic-release/commit-analyzer": "^13.0.1",
     "@semantic-release/git": "^10.0.1",
-    "@semantic-release/github": "^10.3.5",
+    "@semantic-release/github": "^11.0.6",
     "@semantic-release/npm": "^12.0.2",
     "@semantic-release/release-notes-generator": "^14.1.0",
     "@types/google-protobuf": "^3.15.12",
     "@types/jest": "^30.0.0",
     "conventional-changelog-cli": "^5.0.0",
+    "docdash": "^2.0.2",
     "grpc-tools": "^1.13.0",
     "husky": "^9.1.7",
-    "jest": "^30.0.5",
+    "jest": "^30.2.0",
+    "jsdoc": "^4.0.4",
+    "jsdoc-babel": "^0.5.0",
+    "jsdoc-to-markdown": "^9.1.2",
     "protoc-gen-ts": "^0.8.7",
-    "semantic-release": "^24.2.7",
-    "ts-jest": "^29.4.1",
+    "semantic-release": "^24.2.9",
+    "ts-jest": "^29.4.4",
     "ts-node": "^10.9.2",
-    "typescript": "^5.9.2"
+    "typescript": "^5.9.2",
+    "jsdoc-type-pratt-parser": "^6.0.1"
   },
   "repository": {
     "type": "git",

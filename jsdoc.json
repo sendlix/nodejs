@@ -1,0 +1,49 @@
+{
+  "opts": {
+    "template": "node_modules/docdash",
+    "destination": "./docs",
+    "recurse": true,
+    "readme": "README.md"
+  },
+  "source": {
+    "include": ["src"],
+    "exclude": ["src/proto"],
+    "includePattern": ".+\\.(ts|js)$",
+    "excludePattern": "(^|\\/|\\\\)_"
+  },
+  "plugins": ["plugins/markdown", "jsdoc-babel", "jsdoc-type-pratt-parser"],
+  "babel": {
+    "extensions": ["ts", "tsx"],
+    "presets": [
+      [
+        "@babel/preset-typescript",
+        {
+          "allowDeclareFields": true
+        }
+      ]
+    ]
+  },
+  "docdash": {
+    "static": true,
+    "sort": true,
+    "search": true,
+    "collapse": true,
+    "typedefs": true,
+    "removeQuotes": "none",
+    "image": "https://sendlix.com/logo.png",
+    "scripts": [],
+    "menu": {
+      "Github repo": {
+        "href": "https://github.com/sendlix/nodejs",
+        "target": "_blank",
+        "class": "menu-item",
+        "id": "repository"
+      }
+    }
+  },
+  "templates": {
+    "default": {
+      "useLongnameInNav": true
+    }
+  }
+}

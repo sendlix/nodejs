@@ -1,13 +1,9 @@
-name: Deploy Docusaurus to GitHub Pages
+name: Deploy JSDoc to GitHub Pages
 
 on:
   push:
     branches:
       - main
-
-defaults:
-  run:
-    working-directory: ./docs
 
 permissions:
   contents: write
@@ -28,7 +24,7 @@ jobs:
           registry-url: "https://registry.npmjs.org"
 
       - run: npm ci
-      - run: npm run build
+      - run: npm run docs
 
       - name: Setup Pages
         uses: actions/configure-pages@v5
@@ -36,7 +32,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v4
         with:
-          path: ./docs/build
+          path: ./docs
 
       - name: Deploy to GitHub Pages
         id: deployment

@@ -59,11 +59,10 @@ describe("GroupClient", () => {
 
       const substitutions = { key: "value" };
       await expect(
-        groupClient.insertEmailIntoGroup(
-          "group1",
-          "test@example.com",
-          substitutions
-        )
+        groupClient.insertEmailIntoGroup("group1", {
+          email: "test@example.com",
+          substitutions,
+        })
       ).resolves.toBe(true);
     });
 
@@ -87,7 +86,9 @@ describe("GroupClient", () => {
         fakeClient;
 
       await expect(
-        groupClient.insertEmailIntoGroup("group1", ["test@example.com"])
+        groupClient.insertEmailIntoGroup("group1", [
+          { email: "test@example.com" },
+        ])
       ).rejects.toThrow(errorMsg);
     });
 
@@ -111,7 +112,9 @@ describe("GroupClient", () => {
         fakeClient;
 
       await expect(
-        groupClient.insertEmailIntoGroup("group1", "test@example.com")
+        groupClient.insertEmailIntoGroup("group1", {
+          email: "test@example.com",
+        })
       ).rejects.toThrow("gRPC error");
     });
   });

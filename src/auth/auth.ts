@@ -31,7 +31,7 @@ export class Auth implements IAuth {
 
   /**
    * Returns the authorization header for the client
-   * @returns {Promise<[string, string]>} A promise that resolves to a tuple of the header name and value
+   * @returns {Promise<Array<string>>} Promise resolving to [headerName, headerValue]
    */
   getAuthHeader(): Promise<[string, string]> {
     if (this.token && this.token.expiresAt > Date.now()) {

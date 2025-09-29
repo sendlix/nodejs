@@ -2,17 +2,6 @@
 
 This SDK enables the integration of the Sendlix API into NodeJS applications. It provides clients for email sending, group management, and other functionalities.
 
-## Contents
-
-- [Installation](#installation)
-- [Getting Started](#getting-started)
-- [Authentication](#authentication)
-- [Available Clients](#available-clients)
-  - [EmailClient](#emailclient)
-  - [GroupClient](#groupclient)
-- [Examples](#examples)
-- [Contributing and Support](#contributing-and-support)
-
 ## Installation
 
 Install the SDK via npm:
@@ -60,7 +49,7 @@ The EmailClient allows you to send emails, both standardized emails and pre-form
 - `sendEmail(sendMail, additionalOptions?)`  
   Sends a configured email.
 
-- `sendRawEmail(eml, additionalOptions?)`  
+- `sendEmlEmail(eml, additionalOptions?)`  
   Sends an EML file or EML string.
 
 - `sendGroupEmail(content, from, groupId, subject)`  
@@ -75,8 +64,8 @@ The GroupClient allows you to add email addresses to groups or remove them from 
 
 #### Methods
 
-- `insertEmailIntoGroup(groupId, email, substitutions?)`  
-  Adds one or more email addresses to a group.
+- `insertEmailIntoGroup(groupId, emailRecords[, failHandling])`  
+  Adds one or more email records to a group.
 
 - `deleteEmailFromGroup(groupId, email)`  
   Removes an email address from a group. Note: The email must be in the group for at least 30 minutes.
@@ -120,14 +109,17 @@ import { GroupClient } from "sendlix-nodejs-sdk";
 // Initialize client
 const groupClient = new GroupClient("sk_xxxxxxxxx.xxx");
 
-groupClient
-  .insertEmailIntoGroup("groupId123", "recipient@example.com")
-  .then((success) => {
-    console.log("Email added to group:", success);
-  })
-  .catch((error) => {
-    console.error("Error adding email to group:", error);
-  });
+await groupClient.insertEmailIntoGroup("groupId123", {
+  email: "recipient@example.com",
+});
+
+await groupClient.insertEmailIntoGroup("groupId123", [
+  { email: "a@example.com" },
+  {
+    email: { email: "b@example.com", name: "User B" },
+    substitutions: { plan: "pro" },
+  },
+]);
 ```
 
 ## Contributing and Support

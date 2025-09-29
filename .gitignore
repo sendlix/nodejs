@@ -31,3 +31,5 @@ yarn.lock
 *_grpc_pb.d.ts
 *_pb.js
 *_pb.d.ts
+
+docs/
