@@ -16,7 +16,7 @@
   "license": "Apache-2.0",
   "name": "sendlix",
   "version": "1.2.0",
-  "description": "Send emails using Sendlix API",
+  "description": "Send emails using the Sendlix API",
   "author": "Sendlix",
   "main": "dist/cjs/index.js",
   "module": "dist/esm/index.js",
