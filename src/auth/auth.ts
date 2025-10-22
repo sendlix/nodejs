@@ -4,6 +4,10 @@ import { IAuth } from "./IAuth";
 
 const { AuthRequest, ApiKey, AuthClient: gRPCAuthClient } = sendlix.api.v1;
 
+/**
+ * Auth class implements IAuth for handling authentication.
+ * It retrieves and manages JWT tokens using the provided API key.
+ * */
 export class Auth implements IAuth {
   private apiKey: InstanceType<typeof ApiKey>;
   private client: InstanceType<typeof gRPCAuthClient>;
@@ -13,6 +17,10 @@ export class Auth implements IAuth {
     expiresAt: number;
   } | null = null;
 
+  /**
+   * Constructs a new Auth instance.
+   * @param apiKey - The API key in the format 'key.value'.
+   */
   constructor(apiKey: string) {
     const g = apiKey.split(".");
     if (g.length !== 2) {
