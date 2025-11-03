@@ -13,7 +13,6 @@ jest.mock("fs/promises", () => {
 
 interface GRPCResponse {
   message?: string[];
-  emailsLeft?: number;
 }
 
 describe("EmailClient", () => {
@@ -42,7 +41,6 @@ describe("EmailClient", () => {
           callback: (error: Error | null, response: GRPCResponse) => void
         ) => {
           const response: GRPCResponse = {
-            emailsLeft: 42,
             message: ["msg-1", "msg-2"],
           };
           callback(null, response);
@@ -69,7 +67,6 @@ describe("EmailClient", () => {
       const result = await emailClient.sendEmail(sendMailConfig);
       expect(result).toEqual({
         messageList: ["msg-1", "msg-2"],
-        emailsLeft: 42,
       });
       expect(sendEmailMock).toHaveBeenCalledTimes(1);
     });
@@ -81,7 +78,6 @@ describe("EmailClient", () => {
           callback: (error: Error | null, response: GRPCResponse) => void
         ) => {
           callback(new Error("gRPC error"), {
-            emailsLeft: 0,
             message: [],
           });
         }
@@ -121,7 +117,6 @@ describe("EmailClient", () => {
           callback: (error: Error | null, response: GRPCResponse) => void
         ) => {
           const response: GRPCResponse = {
-            emailsLeft: 99,
             message: ["eml-msg"],
           };
           callback(null, response);
@@ -140,7 +135,7 @@ describe("EmailClient", () => {
       mockedReadFile.mockResolvedValue("eml email content");
       const result = await emailClient.sendEmlEmail("path/to/eml");
       expect(mockedReadFile).toHaveBeenCalledWith("path/to/eml", "utf8");
-      expect(result).toEqual({ messageList: ["eml-msg"], emailsLeft: 99 });
+      expect(result).toEqual({ messageList: ["eml-msg"] });
       expect(sendEmlEmailMock).toHaveBeenCalledTimes(1);
     });
 
@@ -150,7 +145,7 @@ describe("EmailClient", () => {
       const bufferInput = Buffer.from("eml email buffer");
       const result = await emailClient.sendEmlEmail(bufferInput);
       expect(mockedReadFile).not.toHaveBeenCalled();
-      expect(result).toEqual({ messageList: ["eml-msg"], emailsLeft: 99 });
+      expect(result).toEqual({ messageList: ["eml-msg"] });
       expect(sendEmlEmailMock).toHaveBeenCalledTimes(1);
     });
 
@@ -161,7 +156,6 @@ describe("EmailClient", () => {
           callback: (error: Error | null, response: GRPCResponse) => void
         ) => {
           callback(new Error("sendRawEmail error"), {
-            emailsLeft: 0,
             message: [],
           });
         }
@@ -192,7 +186,6 @@ describe("EmailClient", () => {
           callback: (error: Error | null, response: GRPCResponse) => void
         ) => {
           const response: GRPCResponse = {
-            emailsLeft: 5,
             message: ["group-msg"],
           };
           callback(null, response);
@@ -212,13 +205,12 @@ describe("EmailClient", () => {
       const groupId = "group-123";
       const subject = "Group Subject";
 
-      const result = await emailClient.sendGroupEmail({
+      await emailClient.sendGroupEmail({
         from: from,
         subject: subject,
         html: "<p>Group Email</p>",
         groupId: groupId,
       });
-      expect(result).toEqual(5);
       expect(sendGroupEmailMock).toHaveBeenCalledTimes(1);
     });
   });

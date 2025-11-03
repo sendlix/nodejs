@@ -36,11 +36,9 @@ type Images = {
  * Response type for the email sending operation
  * @typedef {Object} SendEmailResponse
  * @property {string[]} messageList - List of the email messages ids sent
- * @property {number} emailsLeft - Number of email credits left in the account
  */
 type Response = {
   messageList: string[];
-  emailsLeft: number;
 };
 
 /**
@@ -213,7 +211,6 @@ export class EmailClient extends Client<typeof gRPCEmailClient> {
         } else {
           resolve({
             messageList: response?.message || [],
-            emailsLeft: response?.emailsLeft!,
           });
         }
       });
@@ -258,7 +255,6 @@ export class EmailClient extends Client<typeof gRPCEmailClient> {
         } else {
           resolve({
             messageList: response?.message || [],
-            emailsLeft: response?.emailsLeft!,
           });
         }
       });
@@ -268,9 +264,9 @@ export class EmailClient extends Client<typeof gRPCEmailClient> {
   /**
    * Sends an email to a group of recipients identified by a group ID
    * @param {GroupMailData} groupData - Group email configuration
-   * @returns {Promise<number>} Promise resolving to the number of emails left in the account
+   * @returns {Promise<void>} Promise resolving to the number of emails left in the account
    */
-  public async sendGroupEmail(groupData: GroupMailData): Promise<number> {
+  public async sendGroupEmail(groupData: GroupMailData): Promise<void> {
     const mailData = new GroupMailData();
     mailData.from = createEmailAddress(groupData.from);
     mailData.groupId = groupData.groupId;
@@ -287,12 +283,12 @@ export class EmailClient extends Client<typeof gRPCEmailClient> {
       mailData.category = groupData.category;
     }
 
-    return new Promise<number>((resolve, reject) => {
-      this.client.SendGroupEmail(mailData, (error, response) => {
+    return new Promise<void>((resolve, reject) => {
+      this.client.SendGroupEmail(mailData, (error) => {
         if (error) {
           reject(error);
         } else {
-          resolve(response?.emailsLeft!);
+          resolve();
         }
       });
     });
