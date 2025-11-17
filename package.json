@@ -10,7 +10,7 @@
     "docs": "jsdoc -c jsdoc.json"
   },
   "dependencies": {
-    "@grpc/grpc-js": "^1.14.0",
+    "@grpc/grpc-js": "^1.14.1",
     "google-protobuf": "^4.0.0"
   },
   "license": "Apache-2.0",
