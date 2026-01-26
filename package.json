@@ -48,7 +48,7 @@
     "ts-jest": "^29.4.6",
     "ts-node": "^10.9.2",
     "typescript": "^5.9.3",
-    "jsdoc-type-pratt-parser": "^7.0.0"
+    "jsdoc-type-pratt-parser": "^7.1.0"
   },
   "repository": {
     "type": "git",
