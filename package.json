@@ -56,7 +56,7 @@
   },
   "homepage": "nodejs.docs.sendlix.com",
   "engines": {
-    "node": ">=18.20.8"
+    "node": ">=24.13.1"
   },
   "keywords": [
     "sendlix",
