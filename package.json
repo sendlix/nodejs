@@ -11,7 +11,7 @@
   },
   "dependencies": {
     "@grpc/grpc-js": "^1.14.3",
-    "google-protobuf": "^4.0.1"
+    "google-protobuf": "^4.0.2"
   },
   "license": "Apache-2.0",
   "name": "sendlix",
