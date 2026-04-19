@@ -79,7 +79,6 @@ type mailOption = {
  * @property {string} [text] - Optional plain text content of the email
  * @property {boolean} [tracking] - Optional flag for tracking links in the email
  **/
-
 type GroupMailData = {
   from: EmailAddress;
   groupId: string;
