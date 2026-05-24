@@ -50,11 +50,11 @@ type Response = {
  * @property {EmailAddress[]} [bcc] - Optional list of BCC recipients
  * @property {string} subject - Email subject line
  * @property {EmailAddress} [replyTo] - Optional reply-to address
+ * @property {string} [inReplyTo] - Optional in-reply-to reference
  * @property {string} [html] - Optional HTML content of the email
  * @property {string} [text] - Optional plain text content of the email
  * @property {boolean} [tracking] - Optional flag for tracking links in the email
  * @property {Images[]} [images] - Optional list of images to embed in the email
- *
  */
 type mailOption = {
   from: EmailAddress;
@@ -63,6 +63,7 @@ type mailOption = {
   bcc?: EmailAddress[];
   subject: string;
   replyTo?: EmailAddress;
+  inReplyTo?: string;
   html?: string;
   text?: string;
   tracking?: boolean;
@@ -98,9 +99,9 @@ type GroupMailData = {
  */
 type EmailAddress =
   | {
-      email: string;
-      name?: string;
-    }
+    email: string;
+    name?: string;
+  }
   | string;
 
 /**
@@ -196,6 +197,9 @@ export class EmailClient extends Client<typeof gRPCEmailClient> {
     }
     if (mailOption.replyTo) {
       mailData.reply_to = createEmailAddress(mailOption.replyTo);
+    }
+    if (mailOption.inReplyTo) {
+      mailData.in_reply_to = mailOption.inReplyTo;
     }
 
     if (additionalOptions) {

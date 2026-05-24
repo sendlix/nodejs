@@ -74,6 +74,7 @@ message AttachmentData {
     oneof body {
       MailContent TextContent = 8;
     };
+    string in_reply_to = 10;
   }
   
   
