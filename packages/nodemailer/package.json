@@ -15,7 +15,7 @@
     "build:cjs": "tsc --module CommonJS --outDir dist/cjs"
   },
   "dependencies": {
-    "nodemailer": "^6.9.13",
+    "nodemailer": "^6.9.16",
     "sendlix": "*"
   },
   "devDependencies": {
