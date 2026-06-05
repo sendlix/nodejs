@@ -6,7 +6,7 @@
   ],
   "packageManager": "npm@9.8.0",
   "scripts": {
-    "test": "jest",
+    "test": "npm run build && jest",
     "build": "npm run build --workspaces",
     "release": "multi-semantic-release",
     "prepare": "husky"
