@@ -1,0 +1,85 @@
+{
+  "scripts": {
+    "test": "jest",
+    "compile": "mkdir -p src/proto && grpc_tools_node_protoc --ts_out=import_style=commonjs,binary:./src/proto --grpc_out=grpc_js:./src/proto --proto_path=./proto ./proto/*.proto",
+    "build": "npm run compile && npm run build:esm && npm run build:cjs",
+    "build:esm": "tsc",
+    "build:cjs": "tsc --module CommonJS --outDir dist/cjs",
+    "docs": "jsdoc -c jsdoc.json"
+  },
+  "dependencies": {
+    "@grpc/grpc-js": "^1.14.4",
+    "google-protobuf": "^4.0.2"
+  },
+  "license": "Apache-2.0",
+  "name": "sendlix",
+  "version": "1.3.0",
+  "description": "Send emails using the Sendlix API",
+  "author": "Sendlix",
+  "main": "dist/cjs/index.js",
+  "module": "dist/esm/index.js",
+  "files": [
+    "dist"
+  ],
+  "devDependencies": {
+    "@babel/core": "^7.29.7",
+    "@babel/preset-typescript": "^7.28.5",
+    "@types/google-protobuf": "^3.15.12",
+    "@types/jest": "^30.0.0",
+    "conventional-changelog-cli": "^5.0.0",
+    "docdash": "^2.0.2",
+    "grpc-tools": "^1.13.1",
+    "jest": "^30.4.2",
+    "jsdoc": "^4.0.5",
+    "jsdoc-babel": "^0.5.0",
+    "jsdoc-to-markdown": "^9.1.3",
+    "protoc-gen-ts": "^0.8.7",
+    "ts-jest": "^29.4.11",
+    "ts-node": "^10.9.2",
+    "typescript": "^6.0.3",
+    "jsdoc-type-pratt-parser": "^7.2.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sendlix/nodejs.git"
+  },
+  "homepage": "nodejs.docs.sendlix.com",
+  "engines": {
+    "node": ">=24.16.0"
+  },
+  "keywords": [
+    "sendlix",
+    "email",
+    "api",
+    "sdk"
+  ],
+  "bugs": {
+    "url": "https://github.com/sendlix/nodejs/issues"
+  },
+  "release": {
+    "branches": [
+      "main"
+    ],
+    "plugins": [
+      "@semantic-release/commit-analyzer",
+      "@semantic-release/release-notes-generator",
+      [
+        "@semantic-release/npm",
+        {
+          "pkgRoot": "."
+        }
+      ],
+      [
+        "@semantic-release/git",
+        {
+          "assets": [
+            "CHANGELOG.md",
+            "package.json"
+          ],
+          "message": "chore(release): ${nextRelease.version} [skip ci]\n\n${nextRelease.notes}"
+        }
+      ],
+      "@semantic-release/github"
+    ]
+  }
+}

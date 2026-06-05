@@ -47,7 +47,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           if [ "${{ github.event.inputs.dry_run }}" = "true" ]; then
-            npx semantic-release --dry-run
+            npx multi-semantic-release --dry-run
           else
-            npx semantic-release
+            npx multi-semantic-release
           fi

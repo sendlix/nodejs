@@ -1,19 +1,30 @@
 {
   "opts": {
-    "template": "node_modules/docdash",
+    "template": "../../node_modules/docdash",
     "destination": "./docs",
     "recurse": true,
     "readme": "README.md"
   },
   "source": {
-    "include": ["src"],
-    "exclude": ["src/proto"],
+    "include": [
+      "src"
+    ],
+    "exclude": [
+      "src/proto"
+    ],
     "includePattern": ".+\\.(ts|js)$",
     "excludePattern": "(^|\\/|\\\\)_"
   },
-  "plugins": ["plugins/markdown", "jsdoc-babel", "jsdoc-type-pratt-parser"],
+  "plugins": [
+    "plugins/markdown",
+    "jsdoc-babel",
+    "jsdoc-type-pratt-parser"
+  ],
   "babel": {
-    "extensions": ["ts", "tsx"],
+    "extensions": [
+      "ts",
+      "tsx"
+    ],
     "presets": [
       [
         "@babel/preset-typescript",
