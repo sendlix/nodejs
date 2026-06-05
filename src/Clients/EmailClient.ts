@@ -267,7 +267,7 @@ export class EmailClient extends Client<typeof gRPCEmailClient> {
   /**
    * Sends an email to a group of recipients identified by a group ID
    * @param {GroupMailData} groupData - Group email configuration
-   * @returns {Promise<void>} Promise resolving to the number of emails left in the account
+   * @returns {Promise<void>} Promise that resolves when the group send job was successfully created
    */
   public async sendGroupEmail(groupData: GroupMailData): Promise<void> {
     const mailData = new GroupMailData();
