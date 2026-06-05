@@ -4,8 +4,9 @@
   "workspaces": [
     "packages/*"
   ],
+  "packageManager": "npm@9.8.0",
   "scripts": {
-    "test": "npm run test --workspaces",
+    "test": "jest",
     "build": "npm run build --workspaces",
     "release": "multi-semantic-release",
     "prepare": "husky"
@@ -13,13 +14,13 @@
   "devDependencies": {
     "@commitlint/cli": "^21.0.2",
     "@commitlint/config-conventional": "^21.0.2",
+    "@semantic-release/commit-analyzer": "^13.0.1",
+    "@semantic-release/git": "^10.0.1",
+    "@semantic-release/github": "^12.0.8",
+    "@semantic-release/npm": "^13.1.5",
+    "@semantic-release/release-notes-generator": "^14.1.1",
     "husky": "^9.1.7",
     "multi-semantic-release": "^3.0.2",
-    "semantic-release": "^25.0.3",
-    "@semantic-release/commit-analyzer": "^13.0.1",
-    "@semantic-release/release-notes-generator": "^14.1.1",
-    "@semantic-release/npm": "^13.1.5",
-    "@semantic-release/github": "^12.0.8",
-    "@semantic-release/git": "^10.0.1"
+    "semantic-release": "^25.0.3"
   }
 }

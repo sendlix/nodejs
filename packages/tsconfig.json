@@ -1,0 +1,13 @@
+{
+    "compilerOptions": {
+        "paths": {
+            "sendlix": [
+                "./sendlix/src/index.ts"
+            ],
+            "@sendlix/nodemailer": [
+                "./nodemailer/src/index.ts"
+            ]
+        },
+        "composite": true
+    }
+}

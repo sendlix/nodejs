@@ -1,6 +1,5 @@
 {
   "scripts": {
-    "test": "jest",
     "compile": "mkdir -p src/proto && grpc_tools_node_protoc --ts_out=import_style=commonjs,binary:./src/proto --grpc_out=grpc_js:./src/proto --proto_path=./proto ./proto/*.proto",
     "build": "npm run compile && npm run build:esm && npm run build:cjs",
     "build:esm": "tsc",
