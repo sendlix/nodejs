@@ -12,7 +12,7 @@
     "declaration": true,
     "sourceMap": true,
     "outDir": "dist/esm",
-    "rootDir": ".",
+    "rootDir": "src",
     "composite": true,
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
@@ -29,11 +29,10 @@
     }
   ],
   "include": [
-    "src/**/*",
-    "tests/**/*"
+    "src/**/*"
   ],
   "exclude": [
     "node_modules",
-    "dist",
+    "dist"
   ]
 }
