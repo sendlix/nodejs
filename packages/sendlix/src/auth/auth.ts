@@ -21,9 +21,10 @@ export class Auth implements IAuth {
    * Constructs a new Auth instance.
    * @param apiKey - The API key in the format 'key.value'.
    */
-  constructor(apiKey: string) {
-    const g = apiKey.split(".");
-    if (g.length !== 2) {
+  constructor(apiKey?: string) {
+    const _apiKey = apiKey || process.env.SENDLIX_API_KEY;
+    const g = _apiKey?.split(".");
+    if (g?.length !== 2) {
       throw new Error("Invalid API key format. Expected format: 'key.value'.");
     }
     this.apiKey = new ApiKey({
