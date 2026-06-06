@@ -33,3 +33,5 @@ yarn.lock
 *_pb.d.ts
 
 docs/
+
+.nx/
