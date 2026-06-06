@@ -2,10 +2,10 @@
     "compilerOptions": {
         "paths": {
             "sendlix": [
-                "./sendlix/src/index.ts"
+                "./sendlix/dist/esm"
             ],
             "@sendlix/nodemailer": [
-                "./nodemailer/src/index.ts"
+                "./nodemailer/dist/esm"
             ]
         },
         "composite": true

@@ -9,9 +9,6 @@
             "dependsOn": [
                 "^build"
             ],
-            "outputs": [
-                "packages/nodemailer/dist/**"
-            ],
             "options": {
                 "command": "npm --prefix packages/nodemailer run build"
             }
