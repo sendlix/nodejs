@@ -31,9 +31,9 @@ type FailHandling = keyof typeof FailureHandler;
  */
 type EmailData =
   | {
-      email: string;
-      name?: string;
-    }
+    email: string;
+    name?: string;
+  }
   | string;
 
 /**
@@ -57,7 +57,7 @@ export class GroupClient extends Client<typeof gRpcGroupClient> {
    * Constructs a new GroupClient instance.
    * @param auth - Authentication object implementing IAuth or a raw token string.
    */
-  constructor(auth: IAuth | string) {
+  constructor(auth?: IAuth | string) {
     super(auth, gRpcGroupClient);
   }
 
@@ -117,9 +117,9 @@ export class GroupClient extends Client<typeof gRpcGroupClient> {
           typeof item.email === "string"
             ? new EmailDataProto({ email: item.email })
             : new EmailDataProto({
-                email: item.email.email,
-                name: item.email.name,
-              });
+              email: item.email.email,
+              name: item.email.name,
+            });
 
         // Add the entry to the request payload
         request.entries.push(

@@ -5,7 +5,7 @@ import { IAuth } from "../auth/IAuth";
 export abstract class Client<T extends typeof grpc.Client> {
   protected client: InstanceType<T>;
 
-  constructor(auth: IAuth | string, client: T) {
+  constructor(auth: IAuth | string | undefined, client: T) {
     if (typeof auth === "string") {
       auth = new Auth(auth);
     }

@@ -23,8 +23,11 @@ export class Auth implements IAuth {
    */
   constructor(apiKey?: string) {
     const _apiKey = apiKey || process.env.SENDLIX_API_KEY;
-    const g = _apiKey?.split(".");
-    if (g?.length !== 2) {
+    if (!_apiKey) {
+      throw new Error("No Sendlix API key provided. Pass an apiKey to Auth or set SENDLIX_API_KEY in the environment.");
+    }
+    const g = _apiKey.split(".");
+    if (g.length !== 2) {
       throw new Error("Invalid API key format. Expected format: 'key.value'.");
     }
     this.apiKey = new ApiKey({

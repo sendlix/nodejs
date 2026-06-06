@@ -140,7 +140,7 @@ export class EmailClient extends Client<typeof gRPCEmailClient> {
    * Creates a new EmailClient instance
    * @param {IAuth|string} auth - Authentication credentials or API key
    */
-  constructor(auth: IAuth | string) {
+  constructor(auth?: IAuth | string) {
     super(auth, gRPCEmailClient);
   }
 
