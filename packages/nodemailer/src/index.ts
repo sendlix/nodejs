@@ -6,18 +6,18 @@ export interface SendlixTransportOptions {
     /**
      * Sendlix API Key
      */
-    apiKey: string | IAuth;
+    apiKey?: string | IAuth;
 }
 
 export class SendlixTransport implements Transport {
     public name = 'SendlixTransport';
     public version = '1.0.0';
-    public options: SendlixTransportOptions;
+    public options: SendlixTransportOptions | undefined;
     private client: EmailClient;
 
-    constructor(options: SendlixTransportOptions) {
+    constructor(options?: SendlixTransportOptions) {
         this.options = options;
-        this.client = new EmailClient(options.apiKey);
+        this.client = new EmailClient(options?.apiKey);
     }
 
     /**
@@ -65,6 +65,6 @@ export class SendlixTransport implements Transport {
  * @param options Transport options
  * @returns SendlixTransport instance
  */
-export function sendlixTransport(options: SendlixTransportOptions) {
+export function sendlixTransport(options?: SendlixTransportOptions) {
     return new SendlixTransport(options);
 }

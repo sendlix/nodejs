@@ -14,11 +14,7 @@ npm install @sendlix/nodemailer nodemailer
 import nodemailer from "nodemailer";
 import { sendlixTransport } from "@sendlix/nodemailer";
 
-const transport = nodemailer.createTransport(
-  sendlixTransport({
-    apiKey: "your-sendlix-api-key",
-  })
-);
+const transport = nodemailer.createTransport(sendlixTransport());
 
 async function sendEmail() {
   const info = await transport.sendMail({
@@ -33,4 +29,26 @@ async function sendEmail() {
 }
 
 sendEmail();
+```
+
+## Configuration
+
+### Environment Variables
+
+If the `SENDLIX_API_KEY` environment variable is set, the `sendlixTransport` parameter object is optional:
+
+```typescript
+// With environment variable SENDLIX_API_KEY set
+const transport = nodemailer.createTransport(sendlixTransport());
+```
+
+Without the environment variable, you must pass the `apiKey` option:
+
+```typescript
+// Without environment variable
+const transport = nodemailer.createTransport(
+  sendlixTransport({
+    apiKey: "your-sendlix-api-key",
+  })
+);
 ```
