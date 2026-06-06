@@ -23,10 +23,13 @@ jobs:
           cache: "npm"
 
       - name: Install Dependencies
-        run: npm install
+        run: npm ci
+
+      - name: Build workspace (nx)
+        run: npx nx run-many --target=build --all
 
       - name: Compile Protobuf Files
         run: npm run compile --workspaces --if-present
- 
+
       - name: Run Tests
         run: npm test

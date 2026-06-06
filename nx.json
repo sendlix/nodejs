@@ -1,0 +1,21 @@
+{
+    "npmScope": "sendlix",
+    "affected": {
+        "defaultBase": "main"
+    },
+    "tasksRunnerOptions": {
+        "default": {
+            "runner": "@nx/workspace/tasks-runners/default",
+            "options": {
+                "cacheableOperations": [
+                    "build",
+                    "test"
+                ]
+            }
+        }
+    },
+    "workspaceLayout": {
+        "appsDir": "packages",
+        "libsDir": "packages"
+    }
+}

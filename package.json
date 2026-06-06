@@ -6,8 +6,11 @@
   ],
   "packageManager": "npm@9.8.0",
   "scripts": {
-    "test": "npm run build && jest",
-    "build": "npm run build --workspaces",
+    "test": "nx run-many --target=test --all",
+    "build": "npm run build:workspace",
+    "build:workspace": "nx run-many --target=build --all",
+    "nx": "nx",
+    "ci": "npm run build:workspace && npm test",
     "release": "multi-semantic-release",
     "prepare": "husky"
   },
@@ -21,6 +24,8 @@
     "@semantic-release/release-notes-generator": "^14.1.1",
     "husky": "^9.1.7",
     "multi-semantic-release": "^3.0.2",
-    "semantic-release": "^25.0.3"
+    "semantic-release": "^25.0.3",
+    "nx": "^16.9.0",
+    "@nx/workspace": "^16.9.0"
   }
 }

@@ -4,7 +4,8 @@
     "build": "npm run compile && npm run build:esm && npm run build:cjs",
     "build:esm": "tsc",
     "build:cjs": "tsc --module CommonJS --outDir dist/cjs",
-    "docs": "jsdoc -c jsdoc.json"
+    "docs": "jsdoc -c jsdoc.json",
+    "test": "jest --config ./jest.config.js --runInBand"
   },
   "dependencies": {
     "@grpc/grpc-js": "^1.14.4",
