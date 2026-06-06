@@ -1,6 +1,6 @@
 {
   "name": "@sendlix/nodemailer",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "description": "Nodemailer transport for Sendlix API",
   "main": "dist/cjs/index.js",
   "module": "dist/esm/index.js",
