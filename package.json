@@ -4,7 +4,7 @@
   "workspaces": [
     "packages/*"
   ],
-  "packageManager": "npm@11.18.0",
+  "packageManager": "npm@12.0.2",
   "scripts": {
     "test": "nx run-many --target=test --all",
     "build": "npm run build:workspace",
