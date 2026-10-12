@@ -22,8 +22,8 @@
     "dist"
   ],
   "devDependencies": {
-    "@babel/core": "^8.0.6",
-    "@babel/preset-typescript": "^8.0.1",
+    "@babel/core": "^8.0.7",
+    "@babel/preset-typescript": "^8.0.7",
     "@types/google-protobuf": "^3.15.12",
     "@types/jest": "^30.0.0",
     "@types/node": "^26.4.1",
